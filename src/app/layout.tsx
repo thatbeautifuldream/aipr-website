@@ -53,7 +53,6 @@ export default function RootLayout({
                     you.
                   </p>
                 }
-                action="#"
               />
             }
             links={null}
