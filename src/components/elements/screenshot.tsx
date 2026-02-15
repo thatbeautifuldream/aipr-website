@@ -12,7 +12,7 @@ export function Screenshot({
   placement: 'bottom' | 'bottom-left' | 'bottom-right' | 'top' | 'top-left' | 'top-right'
 } & Omit<ComponentProps<'div'>, 'color'>) {
   const wallpaperColors = {
-    green: 'bg-olive-50 dark:bg-olive-950',
+    green: 'bg-brick-50 dark:bg-brick-950',
     blue: 'bg-blue-50 dark:bg-blue-950',
     purple: 'bg-purple-50 dark:bg-purple-950',
     brown: 'bg-neutral-100 dark:bg-neutral-900',

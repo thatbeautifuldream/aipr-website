@@ -1,7 +1,6 @@
 import { Main } from '@/components/elements/main'
 import { GitHubIcon } from '@/components/icons/social/github-icon'
 import { XIcon } from '@/components/icons/social/x-icon'
-import { YouTubeIcon } from '@/components/icons/social/youtube-icon'
 import { Navbar } from '@/components/navbar'
 import {
   FooterWithWaitlistFormCategoriesAndSocialIcons,
@@ -44,17 +43,7 @@ export default function RootLayout({
 
           <FooterWithWaitlistFormCategoriesAndSocialIcons
             id="footer"
-            cta={
-              <WaitlistForm
-                headline="Join the wait list"
-                subheadline={
-                  <p>
-                    Be the first to review code without reviewing code. Your future self (and your sanity) will thank
-                    you.
-                  </p>
-                }
-              />
-            }
+            cta={<WaitlistForm headline="Join the wait list" subheadline={<p>Automate your code reviews.</p>} />}
             links={null}
             fineprint={`© ${currentYear} @aipr`}
             socialLinks={
@@ -64,9 +53,6 @@ export default function RootLayout({
                 </SocialLink>
                 <SocialLink href="https://github.com" name="GitHub">
                   <GitHubIcon />
-                </SocialLink>
-                <SocialLink href="https://www.youtube.com" name="YouTube">
-                  <YouTubeIcon />
                 </SocialLink>
               </>
             }

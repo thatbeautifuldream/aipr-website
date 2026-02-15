@@ -10,11 +10,11 @@ export default function Page() {
       {/* Hero */}
       <HeroLeftAlignedWithDemo
         id="hero"
-        headline="Code reviews that actually understand."
+        headline="Code reviews without the noise."
         subheadline={
           <p>
-            Agent-agnostic automation that switches between Claude 3.5, GPT-4o, and OpenAI. No provider lock-in, just
-            senior-level critiques on every PR.
+            Agent-agnostic automation that switches between the latest state-of-the-art models. No provider lock-in,
+            just senior-level critiques on every PR.
           </p>
         }
         cta={
@@ -76,7 +76,7 @@ export default function Page() {
           <div className="max-w-2xl text-sm text-neutral-500 dark:text-neutral-400">
             <p className="mb-2">
               <strong className="text-neutral-700 dark:text-neutral-200">Developer Note:</strong> Built for engineers
-              who hate noisy AI comments. aipr focuses on architectural decisions, not style nitpicks.
+              who hate noisy comments and demand control over their reviews.
             </p>
           </div>
         }
