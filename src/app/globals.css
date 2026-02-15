@@ -1,6 +1,9 @@
 @import 'tailwindcss';
 
 @theme {
+  --font-display: 'Familjen Grotesk', sans-serif;
+  --font-sans: 'Inter', system-ui, sans-serif;
+
   --color-brick-50: oklch(98.8% 0.004 25);
   --color-brick-100: oklch(96.6% 0.007 25);
   --color-brick-200: oklch(93% 0.011 25);

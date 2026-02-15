@@ -21,7 +21,7 @@ export function HeroSimpleCentered({
     <section className={clsx('py-16', className)} {...props}>
       <Container className="flex flex-col items-center gap-6">
         {eyebrow}
-        <Heading className="max-w-5xl text-center">{headline}</Heading>
+        <Heading className="font-display max-w-5xl text-center">{headline}</Heading>
         <Text size="lg" className="flex max-w-xl flex-col gap-4 text-center">
           {subheadline}
         </Text>
