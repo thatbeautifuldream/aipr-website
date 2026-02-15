@@ -9,7 +9,6 @@ export function HeroLeftAlignedWithDemo({
   headline,
   subheadline,
   cta,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   demo,
   footer,
   className,
@@ -34,7 +33,7 @@ export function HeroLeftAlignedWithDemo({
             </Text>
             {cta}
           </div>
-          {/* {demo} */}
+          {demo}
         </div>
         {footer}
       </Container>

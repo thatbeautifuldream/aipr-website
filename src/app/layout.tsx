@@ -7,11 +7,14 @@ import {
   SocialLink,
   WaitlistForm,
 } from '@/components/sections/footer-with-waitlist-form-categories-and-social-icons'
+import clsx from 'clsx/lite'
 import type { Metadata } from 'next'
+import { fontDisplay, fontSans } from './fonts'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'aipr.dev - Agent-Agnostic Code Reviews',
+  title: 'AIPR Automated Code Review',
+  description: 'Get automated code reviews using AI. Expert feedback on every pull request without vendor lock-in.',
 }
 
 const currentYear = new Date().getFullYear()
@@ -22,19 +25,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:ital,wght@0,400..700;1,400..700&display=swap"
-          rel="stylesheet"
-        />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
-          rel="stylesheet"
-        />
-      </head>
+    <html lang="en" className={clsx(fontDisplay.variable, fontSans.variable)}>
       <body>
         <>
           <Navbar />
@@ -45,13 +36,17 @@ export default function RootLayout({
             id="footer"
             cta={<WaitlistForm headline="Join the wait list" subheadline={<p>Automate your code reviews.</p>} />}
             links={null}
-            fineprint={`© ${currentYear} @aipr`}
+            fineprint={
+              <>
+                &copy; {currentYear} <s>Too</s> Two excited engineers
+              </>
+            }
             socialLinks={
               <>
                 <SocialLink href="https://x.com" name="X">
                   <XIcon />
                 </SocialLink>
-                <SocialLink href="https://github.com" name="GitHub">
+                <SocialLink href="https://github.com/aipr-agent" name="GitHub">
                   <GitHubIcon />
                 </SocialLink>
               </>
