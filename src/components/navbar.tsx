@@ -1,6 +1,6 @@
 'use client'
 
-import { ButtonLink } from '@/components/elements/button'
+import { GetEarlyAccessButton } from '@/components/get-early-access-button'
 import { NavbarLogo } from '@/components/sections/navbar-with-logo-actions-and-left-aligned-links'
 
 export function Navbar() {
@@ -20,9 +20,7 @@ export function Navbar() {
           </div>
           <div className="flex flex-1 items-center justify-end gap-4">
             <div className="flex shrink-0 items-center gap-5">
-              <ButtonLink href="#footer" size="md">
-                Get Early Access
-              </ButtonLink>
+              <GetEarlyAccessButton size="md" />
             </div>
           </div>
         </div>

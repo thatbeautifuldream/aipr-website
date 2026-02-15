@@ -1,7 +1,7 @@
 import Image from 'next/image'
 
-import { ButtonLink } from '@/components/elements/button'
 import { Screenshot } from '@/components/elements/screenshot'
+import { GetEarlyAccessButton } from '@/components/get-early-access-button'
 import { HeroLeftAlignedWithDemo } from '@/components/sections/hero-left-aligned-with-demo'
 
 export default function Page() {
@@ -17,11 +17,7 @@ export default function Page() {
             request.
           </p>
         }
-        cta={
-          <ButtonLink href="#footer" size="lg">
-            Get Early Access
-          </ButtonLink>
-        }
+        cta={<GetEarlyAccessButton size="lg" />}
         demo={
           <>
             <Screenshot className="rounded-md lg:hidden" wallpaper="green" placement="bottom-right">

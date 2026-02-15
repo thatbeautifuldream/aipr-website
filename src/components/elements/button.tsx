@@ -22,7 +22,7 @@ export function Button({
     <button
       type={type}
       className={clsx(
-        'inline-flex shrink-0 items-center justify-center gap-1 rounded-full text-sm/7 font-medium',
+        'inline-flex shrink-0 cursor-pointer items-center justify-center gap-1 rounded-full text-sm/7 font-medium',
         color === 'dark/light' &&
           'bg-brick-950 text-white hover:bg-brick-800 dark:bg-brick-300 dark:text-brick-950 dark:hover:bg-brick-200',
         color === 'light' && 'hover bg-white text-brick-950 hover:bg-brick-100 dark:bg-brick-100 dark:hover:bg-white',
