@@ -13,8 +13,8 @@ export default function Page() {
         headline="Code reviews without the noise."
         subheadline={
           <p>
-            Automates code reviews using any top-tier AI model. No vendor lock-in, just expert-level feedback on every
-            pull request.
+            Automates code reviews using top-tier AI models. No vendor lock-in, just expert-level feedback on every pull
+            request.
           </p>
         }
         cta={
