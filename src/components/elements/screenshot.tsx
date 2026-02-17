@@ -1,5 +1,6 @@
 import { clsx } from 'clsx/lite'
 import type { ComponentProps } from 'react'
+import { Wallpaper } from './wallpaper'
 
 export function Screenshot({
   children,
@@ -8,23 +9,16 @@ export function Screenshot({
   className,
   ...props
 }: {
-  wallpaper: 'green' | 'blue' | 'purple' | 'brown'
+  wallpaper: 'green' | 'blue' | 'purple' | 'brown' | 'red'
   placement: 'bottom' | 'bottom-left' | 'bottom-right' | 'top' | 'top-left' | 'top-right'
 } & Omit<ComponentProps<'div'>, 'color'>) {
-  const wallpaperColors = {
-    green: 'bg-brick-50 dark:bg-brick-950',
-    blue: 'bg-blue-50 dark:bg-blue-950',
-    purple: 'bg-purple-50 dark:bg-purple-950',
-    brown: 'bg-neutral-100 dark:bg-neutral-900',
-  }
-
   return (
-    <div className={clsx(wallpaperColors[wallpaper], className)} data-placement={placement} {...props}>
+    <Wallpaper color={wallpaper} data-placement={placement} className={clsx('group', className)} {...props}>
       <div className="relative [--padding:min(10%,--spacing(16))] group-data-[placement=bottom]:px-(--padding) group-data-[placement=bottom]:pt-(--padding) group-data-[placement=bottom-left]:pt-(--padding) group-data-[placement=bottom-left]:pr-(--padding) group-data-[placement=bottom-right]:pt-(--padding) group-data-[placement=bottom-right]:pl-(--padding) group-data-[placement=top]:px-(--padding) group-data-[placement=top]:pb-(--padding) group-data-[placement=top-left]:pr-(--padding) group-data-[placement=top-left]:pb-(--padding) group-data-[placement=top-right]:pb-(--padding) group-data-[placement=top-right]:pl-(--padding)">
         <div className="*:relative *:ring-1 *:ring-black/10 group-data-[placement=bottom]:*:rounded-t-sm group-data-[placement=bottom-left]:*:rounded-tr-sm group-data-[placement=bottom-right]:*:rounded-tl-sm group-data-[placement=top]:*:rounded-b-sm group-data-[placement=top-left]:*:rounded-br-sm group-data-[placement=top-right]:*:rounded-bl-sm">
           {children}
         </div>
       </div>
-    </div>
+    </Wallpaper>
   )
 }

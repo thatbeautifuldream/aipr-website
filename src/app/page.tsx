@@ -20,48 +20,48 @@ export default function Page() {
         cta={<GetEarlyAccessButton size="lg" />}
         demo={
           <>
-            <Screenshot className="rounded-md lg:hidden" wallpaper="green" placement="bottom-right">
+            <Screenshot className="rounded-md lg:hidden" wallpaper="red" placement="bottom-right">
               <Image
-                src="/img/logos/aipr-agent-mascot.webp"
-                alt="Viewing, analyzing, commenting - the AIPR mascot carefully examining the codebase, performing detailed analysis on potential issues, and providing thoughtful review comments with expert insights"
+                src="https://cdn.jsdelivr.net/gh/aipr-agent/cdn/aipr-agent-mascot.webp"
+                alt="Viewing, analyzing, commenting - AIPR mascot carefully examining codebase, performing detailed analysis on potential issues, and providing thoughtful review comments with expert insights"
                 width={1670}
                 height={1408}
-                className="rounded-lg bg-white/75 md:hidden dark:hidden"
+                className="rounded-lg rounded-b-none bg-white/75 md:hidden dark:hidden"
               />
               <Image
-                src="/img/logos/aipr-agent-mascot.webp"
-                alt="Viewing, analyzing, commenting - the AIPR mascot carefully examining the codebase, performing detailed analysis on potential issues, and providing thoughtful review comments with expert insights"
+                src="https://cdn.jsdelivr.net/gh/aipr-agent/cdn/aipr-agent-mascot.webp"
+                alt="Viewing, analyzing, commenting - AIPR mascot carefully examining codebase, performing detailed analysis on potential issues, and providing thoughtful review comments with expert insights"
                 width={1670}
                 height={1408}
-                className="rounded-lg bg-black/75 not-dark:hidden md:hidden"
+                className="rounded-lg rounded-b-none bg-black/75 not-dark:hidden md:hidden"
               />
               <Image
-                src="/img/logos/aipr-agent-mascot.webp"
-                alt="Viewing, analyzing, commenting - the AIPR mascot carefully examining the codebase, performing detailed analysis on potential issues, and providing thoughtful review comments with expert insights"
+                src="https://cdn.jsdelivr.net/gh/aipr-agent/cdn/aipr-agent-mascot.webp"
+                alt="Viewing, analyzing, commenting - AIPR mascot carefully examining codebase, performing detailed analysis on potential issues, and providing thoughtful review comments with expert insights"
                 width={2000}
                 height={1408}
-                className="rounded-lg bg-white/75 max-md:hidden dark:hidden"
+                className="rounded-lg rounded-b-none bg-white/75 max-md:hidden dark:hidden"
               />
               <Image
-                src="/img/logos/aipr-agent-mascot.webp"
-                alt="Viewing, analyzing, commenting - the AIPR mascot carefully examining the codebase, performing detailed analysis on potential issues, and providing thoughtful review comments with expert insights"
+                src="https://cdn.jsdelivr.net/gh/aipr-agent/cdn/aipr-agent-mascot.webp"
+                alt="Viewing, analyzing, commenting - AIPR mascot carefully examining codebase, performing detailed analysis on potential issues, and providing thoughtful review comments with expert insights"
                 width={2000}
                 height={1408}
-                className="rounded-lg bg-black/75 not-dark:hidden max-md:hidden"
+                className="rounded-lg rounded-b-none bg-black/75 not-dark:hidden max-md:hidden"
               />
             </Screenshot>
-            <Screenshot className="rounded-lg max-lg:hidden" wallpaper="green" placement="bottom">
+            <Screenshot className="rounded-lg max-lg:hidden" wallpaper="red" placement="bottom">
               <Image
-                src="/img/logos/aipr-agent-mascot.webp"
-                alt="Viewing, analyzing, commenting - the AIPR mascot carefully examining the codebase, performing detailed analysis on potential issues, and providing thoughtful review comments with expert insights"
-                className="rounded-lg bg-white/75 dark:hidden"
+                src="https://cdn.jsdelivr.net/gh/aipr-agent/cdn/aipr-agent-mascot.webp"
+                alt="Viewing, analyzing, commenting - AIPR mascot carefully examining codebase, performing detailed analysis on potential issues, and providing thoughtful review comments with expert insights"
+                className="rounded-lg rounded-b-none bg-white/75 dark:hidden"
                 width={3440}
                 height={1990}
               />
               <Image
-                className="rounded-lg bg-black/75 not-dark:hidden"
-                src="/img/logos/aipr-agent-mascot.webp"
-                alt="Viewing, analyzing, commenting - the AIPR mascot carefully examining the codebase, performing detailed analysis on potential issues, and providing thoughtful review comments with expert insights"
+                className="rounded-lg rounded-b-none bg-black/75 not-dark:hidden"
+                src="https://cdn.jsdelivr.net/gh/aipr-agent/cdn/aipr-agent-mascot.webp"
+                alt="Viewing, analyzing, commenting - AIPR mascot carefully examining codebase, performing detailed analysis on potential issues, and providing thoughtful review comments with expert insights"
                 width={3440}
                 height={1990}
               />
