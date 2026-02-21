@@ -25,8 +25,11 @@ export const repository = createTRPCRouter({
 
       const { userRepos, headers } = await getchGithubRepos(userAccessToken, input.page, input.perPage)
 
-      const hasNextPage = headers['link']?.includes('rel="next"')
-      const hasPrevPage = headers['link']?.includes('rel="prev"')
+      const linkHeader = headers['link'] ?? ''
+      const hasNextPage = linkHeader.includes('rel="next"')
+      const hasPrevPage = linkHeader.includes('rel="prev"')
+      const lastPageMatch = linkHeader.match(/page=(\d+)[^>]*>;\s*rel="last"/)
+      const totalPages = lastPageMatch ? parseInt(lastPageMatch[1], 10) : input.page
 
       return {
         repos: userRepos,
@@ -35,6 +38,7 @@ export const repository = createTRPCRouter({
           perPage: input.perPage,
           hasNextPage: !!hasNextPage,
           hasPrevPage: !!hasPrevPage,
+          totalPages,
         },
       }
     }),
