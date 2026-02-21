@@ -131,7 +131,7 @@ export default function DemoPage() {
   const [page, setPage] = useState(1)
   const [perPage, setPerPage] = useState(10)
 
-  const getAllRepos = trpc.listRepository.getAll.useQuery({ page, perPage })
+  const getAllRepos = trpc.listRepository.list.useQuery({ page, perPage })
 
   const handlePreviousPage = () => {
     if (page > 1) setPage(page - 1)

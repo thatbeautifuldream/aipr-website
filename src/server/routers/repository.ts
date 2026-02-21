@@ -1,11 +1,10 @@
-import { and, eq } from 'drizzle-orm'
-import { Octokit } from 'octokit'
+import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
 import { createTRPCRouter, protectedProcedure } from '../api/trpc'
-import { account } from '../db/schema'
+import { getchGithubRepos, getGithubAccessToken } from '../services/github'
 
 export const listRepositoryRouter = createTRPCRouter({
-  getAll: protectedProcedure
+  list: protectedProcedure
     .input(
       z.object({
         page: z.number().min(1).optional().default(1),
@@ -15,27 +14,16 @@ export const listRepositoryRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       const userId = ctx.session.user.id
 
-      const userAccount = await ctx.db
-        .select({
-          accessToken: account.accessToken,
-        })
-        .from(account)
-        .where(and(eq(account.userId, userId), eq(account.providerId, 'github')))
-        .limit(1)
+      const userAccessToken = await getGithubAccessToken(userId)
 
-      if (!userAccount[0]?.accessToken) {
-        throw new Error('GitHub account not linked or access token not found')
+      if (!userAccessToken) {
+        throw new TRPCError({
+          code: 'UNAUTHORIZED',
+          message: 'GitHub account not linked or access token not found',
+        })
       }
 
-      const octokit = new Octokit({
-        auth: userAccount[0].accessToken,
-      })
-
-      const { data: userRepos, headers } = await octokit.rest.repos.listForAuthenticatedUser({
-        sort: 'updated',
-        page: input.page,
-        per_page: input.perPage,
-      })
+      const { userRepos, headers } = await getchGithubRepos(userAccessToken, input.page, input.perPage)
 
       const linkHeader = (headers as Record<string, unknown>)['link'] || ''
       const hasNextPage = String(linkHeader).includes('rel="next"')
