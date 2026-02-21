@@ -2,6 +2,8 @@
 
 import Link from 'next/link'
 
+import { useTRPC } from '@/trpc/client'
+import { useMutation } from '@tanstack/react-query'
 import { clsx } from 'clsx/lite'
 import type { ComponentProps, ReactNode } from 'react'
 import { useState } from 'react'
@@ -47,17 +49,6 @@ export function SocialLink({
   )
 }
 
-async function addToWaitlist(email: string) {
-  const response = await fetch('https://aipr.jabhi465.workers.dev/waitlist', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ email }),
-  })
-  return response
-}
-
 export function WaitlistForm({
   headline,
   subheadline,
@@ -70,6 +61,8 @@ export function WaitlistForm({
   const [email, setEmail] = useState('')
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
   const [errorMessage, setErrorMessage] = useState('')
+  const trpc = useTRPC()
+  const addMutation = useMutation(trpc.waitlist.add.mutationOptions())
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -79,21 +72,9 @@ export function WaitlistForm({
     setErrorMessage('')
 
     try {
-      const response = await addToWaitlist(email)
-
-      if (response.ok) {
-        setStatus('success')
-        setEmail('')
-      } else {
-        setStatus('error')
-        if (response.status === 409) {
-          setErrorMessage('You are already on the waitlist.')
-        } else if (response.status === 429) {
-          setErrorMessage('Too many requests. Please try again later.')
-        } else {
-          setErrorMessage('Something went wrong. Please try again.')
-        }
-      }
+      await addMutation.mutateAsync({ email })
+      setStatus('success')
+      setEmail('')
     } catch {
       setStatus('error')
       setErrorMessage('Something went wrong. Please try again.')
