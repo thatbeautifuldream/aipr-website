@@ -1,7 +1,7 @@
 import { waitlists } from '@/db/schema'
 import { count, eq } from 'drizzle-orm'
 import { z } from 'zod'
-import { createTRPCRouter, publicProcedure } from '../server'
+import { createTRPCRouter, protectedProcedure, publicProcedure } from '../server'
 
 export const waitlistRouter = createTRPCRouter({
   add: publicProcedure.input(z.object({ email: z.string().email() })).mutation(async ({ ctx, input }) => {
@@ -29,5 +29,17 @@ export const waitlistRouter = createTRPCRouter({
   count: publicProcedure.query(async ({ ctx }) => {
     const result = await ctx.db.select({ count: count() }).from(waitlists)
     return result[0].count
+  }),
+
+  leave: protectedProcedure.mutation(async ({ ctx }) => {
+    const userEmail = ctx.session.user.email
+
+    try {
+      const [result] = await ctx.db.delete(waitlists).where(eq(waitlists.email, userEmail)).returning()
+      return result
+    } catch (error) {
+      console.error('Failed to remove from waitlist:', error)
+      throw new Error('Failed to remove from waitlist')
+    }
   }),
 })

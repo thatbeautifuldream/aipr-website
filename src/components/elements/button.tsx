@@ -73,7 +73,7 @@ export function SoftButton({
     <button
       type={type}
       className={clsx(
-        'inline-flex shrink-0 items-center justify-center gap-1 rounded-full bg-brick-950/10 text-sm/7 font-medium text-brick-950 hover:bg-brick-950/15 dark:bg-white/10 dark:text-white dark:hover:bg-white/20',
+        'inline-flex shrink-0 cursor-pointer items-center justify-center gap-1 rounded-full bg-brick-950/10 text-sm/7 font-medium text-brick-950 hover:bg-brick-950/15 dark:bg-white/10 dark:text-white dark:hover:bg-white/20',
         sizes[size],
         className,
       )}
