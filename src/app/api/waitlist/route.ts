@@ -1,10 +1,10 @@
-import { addToWaitlist, getWaitlists } from '@/db/queries'
+import { addToWaitlist, getWaitlistCount } from '@/db/queries'
 import { NextResponse } from 'next/server'
 
 export async function GET() {
   try {
-    const waitlist = await getWaitlists()
-    return NextResponse.json({ waitlist })
+    const count = await getWaitlistCount()
+    return NextResponse.json({ count })
   } catch {
     return NextResponse.json({ error: 'Failed to fetch waitlist' }, { status: 500 })
   }
