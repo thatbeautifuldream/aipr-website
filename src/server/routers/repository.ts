@@ -25,9 +25,8 @@ export const repository = createTRPCRouter({
 
       const { userRepos, headers } = await getchGithubRepos(userAccessToken, input.page, input.perPage)
 
-      const linkHeader = (headers as Record<string, unknown>)['link'] || ''
-      const hasNextPage = String(linkHeader).includes('rel="next"')
-      const hasPrevPage = String(linkHeader).includes('rel="prev"')
+      const hasNextPage = headers['link']?.includes('rel="next"')
+      const hasPrevPage = headers['link']?.includes('rel="prev"')
 
       return {
         repos: userRepos,
