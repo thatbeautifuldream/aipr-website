@@ -1,10 +1,10 @@
-import { waitlists } from '@/db/schema'
+import { waitlists } from '@/server/db/schema'
 import { count, eq } from 'drizzle-orm'
 import { z } from 'zod'
-import { createTRPCRouter, protectedProcedure, publicProcedure } from '../server'
+import { createTRPCRouter, protectedProcedure, publicProcedure } from '../api/trpc'
 
 export const waitlistRouter = createTRPCRouter({
-  add: publicProcedure.input(z.object({ email: z.string().email() })).mutation(async ({ ctx, input }) => {
+  add: publicProcedure.input(z.object({ email: z.string() })).mutation(async ({ ctx, input }) => {
     try {
       const [result] = await ctx.db
         .insert(waitlists)

@@ -1,26 +1,19 @@
-import { db } from '@/db'
-import { auth, Session } from '@/lib/auth'
+import { Session } from '@/lib/auth'
+import { db } from '@/server/db'
 import { initTRPC, TRPCError } from '@trpc/server'
-import { headers } from 'next/headers'
-import superjson from 'superjson'
+import SuperJSON from 'superjson'
 import { ZodError } from 'zod'
 
-export interface TRPCContext {
-  db: typeof db
-  headers: Headers
-  session: Session | null
+export const createTrpcContext = (opts: { headers: Headers; session: Session }) => {
+  return {
+    db,
+    opts: opts.headers,
+    session: opts.session,
+  }
 }
 
-export const createTRPCContext = async (): Promise<TRPCContext> => {
-  const headersList = await headers()
-  const session = await auth.api.getSession({
-    headers: headersList,
-  })
-  return { db, headers: headersList, session }
-}
-
-const t = initTRPC.context<TRPCContext>().create({
-  transformer: superjson,
+const t = initTRPC.context<typeof createTrpcContext>().create({
+  transformer: SuperJSON,
   errorFormatter({ shape, error }) {
     return {
       ...shape,
