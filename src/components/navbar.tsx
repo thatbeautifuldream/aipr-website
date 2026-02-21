@@ -1,11 +1,12 @@
 'use client'
 
 import { NavbarLogo } from '@/components/sections/navbar-with-logo-actions-and-left-aligned-links'
-import { signIn, useSession } from '../lib/auth-client'
-import { Button, ButtonLink } from './elements/button'
+import { SignInButton } from '@/components/sign-in-button'
+import { UserMenu } from '@/components/user-menu'
+import { useSession } from '@/lib/auth-client'
 
 export function Navbar() {
-  const { data: session } = useSession()
+  const { data, isPending } = useSession()
 
   return (
     <header className="sticky top-0 z-10 bg-brick-100 dark:bg-brick-950">
@@ -23,19 +24,7 @@ export function Navbar() {
           </div>
           <div className="flex flex-1 items-center justify-end gap-4">
             <div className="flex shrink-0 items-center gap-5">
-              {session ? (
-                <ButtonLink href="/dashboard">Dashboard</ButtonLink>
-              ) : (
-                <Button
-                  onClick={() => {
-                    signIn.social({
-                      provider: 'github',
-                    })
-                  }}
-                >
-                  Sign Up
-                </Button>
-              )}
+              {!isPending && (data ? <UserMenu /> : <SignInButton />)}
             </div>
           </div>
         </div>

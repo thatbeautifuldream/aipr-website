@@ -3,8 +3,11 @@ import * as schema from '@/server/db/schema'
 import { betterAuth } from 'better-auth'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
 import { nextCookies } from 'better-auth/next-js'
+import { getBaseUrl } from './utils'
 
 export const auth = betterAuth({
+  baseURL: getBaseUrl(),
+
   database: drizzleAdapter(db, {
     provider: 'pg',
     schema,
@@ -26,7 +29,7 @@ export const auth = betterAuth({
     },
   },
 
-  trustedOrigins: [process.env.BETTER_AUTH_URL!],
+  trustedOrigins: [getBaseUrl()],
 
   plugins: [nextCookies()],
 })
