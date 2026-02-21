@@ -4,7 +4,7 @@ import { initTRPC, TRPCError } from '@trpc/server'
 import SuperJSON from 'superjson'
 import { ZodError } from 'zod'
 
-export const createTrpcContext = (opts: { headers: Headers; session: Session }) => {
+export const createTrpcContext = (opts: { headers: Headers; session: Session | null }) => {
   return {
     db,
     opts: opts.headers,
