@@ -3,6 +3,7 @@ import { createTRPCClient, httpBatchLink } from '@trpc/client'
 import { createTRPCOptionsProxy } from '@trpc/tanstack-react-query'
 import { cache } from 'react'
 import superjson from 'superjson'
+import { getBaseUrl } from '../lib/utils'
 import type { AppRouter } from './index'
 import { appRouter } from './index'
 import { makeQueryClient } from './query-client'
@@ -16,11 +17,6 @@ export const getCaller = cache(async () => {
   const ctx = await createTRPCContext()
   return createCaller(ctx)
 })
-
-function getBaseUrl() {
-  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`
-  return 'http://localhost:3000'
-}
 
 export const trpc = createTRPCOptionsProxy<AppRouter>({
   queryClient: getQueryClient,
