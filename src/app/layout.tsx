@@ -7,9 +7,9 @@ import {
   SocialLink,
   WaitlistForm,
 } from '@/components/sections/footer-with-waitlist-form-categories-and-social-icons'
-import { TRPCReactProvider } from '@/trpc/client'
 import clsx from 'clsx/lite'
 import type { Metadata } from 'next'
+import { TRPCProvider } from '../lib/trpc'
 import { fontDisplay, fontSans } from './fonts'
 import './globals.css'
 
@@ -28,7 +28,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={clsx(fontDisplay.variable, fontSans.variable)}>
       <body>
-        <TRPCReactProvider>
+        <TRPCProvider>
           <Navbar />
 
           <Main>{children}</Main>
@@ -53,7 +53,7 @@ export default function RootLayout({
               </>
             }
           />
-        </TRPCReactProvider>
+        </TRPCProvider>
       </body>
     </html>
   )
