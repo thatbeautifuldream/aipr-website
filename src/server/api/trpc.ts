@@ -1,21 +1,17 @@
-import { db } from '@/db'
+import { db } from '@/server/db'
 import { initTRPC } from '@trpc/server'
-import { headers } from 'next/headers'
-import superjson from 'superjson'
+import SuperJSON from 'superjson'
 import { ZodError } from 'zod'
 
-export interface TRPCContext {
-  db: typeof db
-  headers: Headers
+export const createTrpcContext = (opts: { headers: Headers }) => {
+  return {
+    db,
+    opts: opts.headers,
+  }
 }
 
-export const createTRPCContext = async (): Promise<TRPCContext> => {
-  const headersList = await headers()
-  return { db, headers: headersList }
-}
-
-const t = initTRPC.context<TRPCContext>().create({
-  transformer: superjson,
+const t = initTRPC.context<typeof createTrpcContext>().create({
+  transformer: SuperJSON,
   errorFormatter({ shape, error }) {
     return {
       ...shape,

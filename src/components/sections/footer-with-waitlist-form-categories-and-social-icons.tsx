@@ -2,11 +2,10 @@
 
 import Link from 'next/link'
 
-import { useTRPC } from '@/trpc/client'
-import { useMutation } from '@tanstack/react-query'
 import { clsx } from 'clsx/lite'
 import type { ComponentProps, ReactNode } from 'react'
 import { useState } from 'react'
+import { trpc } from '../../lib/trpc'
 import { Container } from '../elements/container'
 import { ArrowNarrowRightIcon } from '../icons/arrow-narrow-right-icon'
 
@@ -61,8 +60,7 @@ export function WaitlistForm({
   const [email, setEmail] = useState('')
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
   const [errorMessage, setErrorMessage] = useState('')
-  const trpc = useTRPC()
-  const addMutation = useMutation(trpc.waitlist.add.mutationOptions())
+  const addMutation = trpc.waitlist.add.useMutation()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
