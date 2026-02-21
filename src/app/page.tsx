@@ -20,7 +20,7 @@ export default function Page() {
         cta={<GetEarlyAccessButton size="lg" />}
         demo={
           <>
-            <Screenshot className="rounded-md lg:hidden" wallpaper="red" placement="bottom-right">
+            <Screenshot className="rounded-md lg:hidden" wallpaper="purple" placement="bottom-right">
               <Image
                 src="https://cdn.jsdelivr.net/gh/aipr-agent/cdn/aipr-agent-mascot.webp"
                 alt="Viewing, analyzing, commenting - AIPR mascot carefully examining codebase, performing detailed analysis on potential issues, and providing thoughtful review comments with expert insights"
@@ -50,7 +50,7 @@ export default function Page() {
                 className="rounded-lg rounded-b-none bg-black/75 not-dark:hidden max-md:hidden"
               />
             </Screenshot>
-            <Screenshot className="rounded-lg max-lg:hidden" wallpaper="red" placement="bottom">
+            <Screenshot className="rounded-lg max-lg:hidden" wallpaper="purple" placement="bottom">
               <Image
                 src="https://cdn.jsdelivr.net/gh/aipr-agent/cdn/aipr-agent-mascot.webp"
                 alt="Viewing, analyzing, commenting - AIPR mascot carefully examining codebase, performing detailed analysis on potential issues, and providing thoughtful review comments with expert insights"

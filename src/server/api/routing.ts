@@ -1,4 +1,4 @@
-import { listRepositoryRouter } from '@/server/routers/listRepository'
+import { listRepositoryRouter } from '@/server/routers/repository'
 import { waitlistRouter } from '@/server/routers/waitlist'
 import { createCallerFactory, createTRPCRouter, publicProcedure } from './trpc'
 

@@ -22,7 +22,7 @@ export function FooterCategory({ title, children, ...props }: { title: ReactNode
 
 export function FooterLink({ href, className, ...props }: { href: string } & Omit<ComponentProps<'a'>, 'href'>) {
   return (
-    <li className={clsx('text-brick-700 dark:text-brick-400', className)}>
+    <li className={clsx('text-mauve-700 dark:text-mauve-400', className)}>
       <Link href={href} {...props} />
     </li>
   )
@@ -42,7 +42,7 @@ export function SocialLink({
       href={href}
       target="_blank"
       aria-label={name}
-      className={clsx('text-brick-950 *:size-6 dark:text-white', className)}
+      className={clsx('text-mauve-950 *:size-6 dark:text-white', className)}
       {...props}
     />
   )
@@ -82,12 +82,12 @@ export function WaitlistForm({
   return (
     <form className={clsx('flex max-w-sm flex-col gap-2', className)} onSubmit={handleSubmit} {...props}>
       <p>{headline}</p>
-      <div className="flex flex-col gap-4 text-brick-700 dark:text-brick-400">{subheadline}</div>
+      <div className="flex flex-col gap-4 text-mauve-700 dark:text-mauve-400">{subheadline}</div>
       {status === 'success' ? (
-        <p className="text-brick-700 dark:text-brick-400">You&apos;re on the list! 🎉</p>
+        <p className="text-mauve-700 dark:text-mauve-400">You&apos;re on the list! 🎉</p>
       ) : (
         <>
-          <div className="flex items-center border-b border-brick-950/20 py-2 has-[input:focus]:border-brick-950 dark:border-white/20 dark:has-[input:focus]:border-white">
+          <div className="flex items-center border-b border-mauve-950/20 py-2 has-[input:focus]:border-mauve-950 dark:border-white/20 dark:has-[input:focus]:border-white">
             <input
               type="email"
               placeholder="Email"
@@ -95,16 +95,16 @@ export function WaitlistForm({
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               disabled={status === 'loading'}
-              className="flex-1 text-brick-950 focus:outline-hidden disabled:opacity-50 dark:text-white"
+              className="flex-1 text-mauve-950 focus:outline-hidden disabled:opacity-50 dark:text-white"
             />
             <button
               type="submit"
               aria-label="Join"
               disabled={status === 'loading' || !email}
-              className="relative inline-flex size-7 items-center justify-center rounded-full after:absolute after:-inset-2 hover:bg-brick-950/10 disabled:cursor-not-allowed disabled:opacity-50 dark:hover:bg-white/10 after:pointer-fine:hidden"
+              className="relative inline-flex size-7 items-center justify-center rounded-full after:absolute after:-inset-2 hover:bg-mauve-950/10 disabled:cursor-not-allowed disabled:opacity-50 dark:hover:bg-white/10 after:pointer-fine:hidden"
             >
               {status === 'loading' ? (
-                <div className="size-4 animate-spin rounded-full border-2 border-brick-950 border-t-transparent dark:border-white" />
+                <div className="size-4 animate-spin rounded-full border-2 border-mauve-950 border-t-transparent dark:border-white" />
               ) : (
                 <ArrowNarrowRightIcon />
               )}
@@ -132,7 +132,7 @@ export function FooterWithWaitlistFormCategoriesAndSocialIcons({
 } & ComponentProps<'footer'>) {
   return (
     <footer className={clsx('pt-16', className)} {...props}>
-      <div className="bg-brick-950/2.5 py-16 text-brick-950 dark:bg-white/5 dark:text-white">
+      <div className="bg-mauve-950/2.5 py-16 text-mauve-950 dark:bg-white/5 dark:text-white">
         <Container className="flex flex-col gap-16">
           <div className="grid grid-cols-1 gap-x-6 gap-y-16 text-sm/7 lg:grid-cols-2">
             {cta}
@@ -141,7 +141,7 @@ export function FooterWithWaitlistFormCategoriesAndSocialIcons({
             </nav>
           </div>
           <div className="flex items-center justify-between gap-10 text-sm/7">
-            <div className="text-brick-600 dark:text-brick-500">{fineprint}</div>
+            <div className="text-mauve-600 dark:text-mauve-500">{fineprint}</div>
             {socialLinks && <div className="flex items-center gap-4 sm:gap-10">{socialLinks}</div>}
           </div>
         </Container>

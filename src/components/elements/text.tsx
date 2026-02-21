@@ -7,7 +7,7 @@ export function Text({ children, className, size = 'md', ...props }: ComponentPr
       className={clsx(
         size === 'md' && 'text-base/7',
         size === 'lg' && 'text-lg/8',
-        'text-brick-700 dark:text-brick-400',
+        'text-mauve-700 dark:text-mauve-400',
         className,
       )}
       {...props}

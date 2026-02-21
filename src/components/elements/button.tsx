@@ -24,8 +24,8 @@ export function Button({
       className={clsx(
         'inline-flex shrink-0 cursor-pointer items-center justify-center gap-1 rounded-full text-sm/7 font-medium',
         color === 'dark/light' &&
-          'bg-brick-950 text-white hover:bg-brick-800 dark:bg-brick-300 dark:text-brick-950 dark:hover:bg-brick-200',
-        color === 'light' && 'hover bg-white text-brick-950 hover:bg-brick-100 dark:bg-brick-100 dark:hover:bg-white',
+          'bg-mauve-950 text-white hover:bg-mauve-800 dark:bg-mauve-300 dark:text-mauve-950 dark:hover:bg-mauve-200',
+        color === 'light' && 'hover bg-white text-mauve-950 hover:bg-mauve-100 dark:bg-mauve-100 dark:hover:bg-white',
         sizes[size],
         className,
       )}
@@ -51,8 +51,8 @@ export function ButtonLink({
       className={clsx(
         'inline-flex shrink-0 items-center justify-center gap-1 rounded-full text-sm/7 font-medium',
         color === 'dark/light' &&
-          'bg-brick-950 text-white hover:bg-brick-800 dark:bg-brick-300 dark:text-brick-950 dark:hover:bg-brick-200',
-        color === 'light' && 'hover bg-white text-brick-950 hover:bg-brick-100 dark:bg-brick-100 dark:hover:bg-white',
+          'bg-mauve-950 text-white hover:bg-mauve-800 dark:bg-mauve-300 dark:text-mauve-950 dark:hover:bg-mauve-200',
+        color === 'light' && 'hover bg-white text-mauve-950 hover:bg-mauve-100 dark:bg-mauve-100 dark:hover:bg-white',
         sizes[size],
         className,
       )}
@@ -73,7 +73,7 @@ export function SoftButton({
     <button
       type={type}
       className={clsx(
-        'inline-flex shrink-0 cursor-pointer items-center justify-center gap-1 rounded-full bg-brick-950/10 text-sm/7 font-medium text-brick-950 hover:bg-brick-950/15 dark:bg-white/10 dark:text-white dark:hover:bg-white/20',
+        'inline-flex shrink-0 cursor-pointer items-center justify-center gap-1 rounded-full bg-mauve-950/10 text-sm/7 font-medium text-mauve-950 hover:bg-mauve-950/15 dark:bg-white/10 dark:text-white dark:hover:bg-white/20',
         sizes[size],
         className,
       )}
@@ -95,7 +95,7 @@ export function SoftButtonLink({
     <Link
       href={href}
       className={clsx(
-        'inline-flex shrink-0 items-center justify-center gap-1 rounded-full bg-brick-950/10 text-sm/7 font-medium text-brick-950 hover:bg-brick-950/15 dark:bg-white/10 dark:text-white dark:hover:bg-white/20',
+        'inline-flex shrink-0 items-center justify-center gap-1 rounded-full bg-mauve-950/10 text-sm/7 font-medium text-mauve-950 hover:bg-mauve-950/15 dark:bg-white/10 dark:text-white dark:hover:bg-white/20',
         sizes[size],
         className,
       )}
@@ -119,7 +119,7 @@ export function PlainButton({
       type={type}
       className={clsx(
         'inline-flex shrink-0 items-center justify-center gap-2 rounded-full text-sm/7 font-medium',
-        color === 'dark/light' && 'text-brick-950 hover:bg-brick-950/10 dark:text-white dark:hover:bg-white/10',
+        color === 'dark/light' && 'text-mauve-950 hover:bg-mauve-950/10 dark:text-white dark:hover:bg-white/10',
         color === 'light' && 'text-white hover:bg-white/15 dark:hover:bg-white/10',
         sizes[size],
         className,
@@ -145,7 +145,7 @@ export function PlainButtonLink({
       href={href}
       className={clsx(
         'inline-flex shrink-0 items-center justify-center gap-2 rounded-full text-sm/7 font-medium',
-        color === 'dark/light' && 'text-brick-950 hover:bg-brick-950/10 dark:text-white dark:hover:bg-white/10',
+        color === 'dark/light' && 'text-mauve-950 hover:bg-mauve-950/10 dark:text-white dark:hover:bg-white/10',
         color === 'light' && 'text-white hover:bg-white/15 dark:hover:bg-white/10',
         sizes[size],
         className,

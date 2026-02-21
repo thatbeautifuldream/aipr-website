@@ -9,7 +9,7 @@ export function Navbar() {
   const { data, isPending } = useSession()
 
   return (
-    <header className="sticky top-0 z-10 bg-brick-100 dark:bg-brick-950">
+    <header className="sticky top-0 z-10 bg-mauve-100 dark:bg-mauve-950">
       <style>{`:root { --scroll-padding-top: 5.25rem }`}</style>
       <nav>
         <div className="mx-auto flex h-(--scroll-padding-top) max-w-7xl items-center gap-4 px-6 lg:px-10">

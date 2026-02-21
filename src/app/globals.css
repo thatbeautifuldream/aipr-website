@@ -4,29 +4,29 @@
   --font-display: 'Familjen Grotesk', sans-serif;
   --font-sans: 'Inter', system-ui, sans-serif;
 
-  --color-brick-50: oklch(98.8% 0.004 25);
-  --color-brick-100: oklch(96.6% 0.007 25);
-  --color-brick-200: oklch(93% 0.011 25);
-  --color-brick-300: oklch(88% 0.018 25);
-  --color-brick-400: oklch(73.7% 0.03 25);
-  --color-brick-500: oklch(58% 0.05 25);
-  --color-brick-600: oklch(46.6% 0.06 25);
-  --color-brick-700: oklch(39.4% 0.062 25);
-  --color-brick-800: oklch(28.6% 0.054 25);
-  --color-brick-900: oklch(22.8% 0.045 25);
-  --color-brick-950: oklch(15.3% 0.03 25);
+  --color-mauve-50: oklch(98.5% 0 0);
+  --color-mauve-100: oklch(96% 0.003 325.6);
+  --color-mauve-200: oklch(92.2% 0.005 325.62);
+  --color-mauve-300: oklch(86.5% 0.012 325.68);
+  --color-mauve-400: oklch(71.1% 0.019 323.02);
+  --color-mauve-500: oklch(54.2% 0.034 322.5);
+  --color-mauve-600: oklch(43.5% 0.029 321.78);
+  --color-mauve-700: oklch(36.4% 0.029 323.89);
+  --color-mauve-800: oklch(26.3% 0.024 320.12);
+  --color-mauve-900: oklch(21.2% 0.019 322.12);
+  --color-mauve-950: oklch(14.5% 0.008 326);
 }
 
 @layer base {
   html {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background-color: var(--color-brick-100);
+    background-color: var(--color-mauve-100);
     --scroll-padding-top: 0;
     scroll-padding-top: var(--scroll-padding-top);
 
     @variant dark {
-      background-color: var(--color-brick-950);
+      background-color: var(--color-mauve-950);
     }
   }
 }
