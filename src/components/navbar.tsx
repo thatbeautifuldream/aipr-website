@@ -1,5 +1,6 @@
 'use client'
 
+import { ModeToggle } from '@/components/mode-toggle'
 import { NavbarLogo } from '@/components/sections/navbar-with-logo-actions-and-left-aligned-links'
 import { SignInButton } from '@/components/sign-in-button'
 import { UserMenu } from '@/components/user-menu'
@@ -24,7 +25,15 @@ export function Navbar() {
           </div>
           <div className="flex flex-1 items-center justify-end gap-4">
             <div className="flex shrink-0 items-center gap-5">
-              {!isPending && (data ? <UserMenu /> : <SignInButton />)}
+              {!isPending &&
+                (data ? (
+                  <UserMenu />
+                ) : (
+                  <>
+                    <ModeToggle />
+                    <SignInButton />
+                  </>
+                ))}
             </div>
           </div>
         </div>

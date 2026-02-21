@@ -1,11 +1,5 @@
-import { Main } from '@/components/elements/main'
-import { GitHubIcon } from '@/components/icons/social/github-icon'
-import { Navbar } from '@/components/navbar'
-import {
-  FooterWithWaitlistFormCategoriesAndSocialIcons,
-  SocialLink,
-  WaitlistForm,
-} from '@/components/sections/footer-with-waitlist-form-categories-and-social-icons'
+import { ThemeProvider } from '@/components/theme-provider'
+import { TooltipProvider } from '@/components/ui/tooltip'
 import clsx from 'clsx/lite'
 import type { Metadata } from 'next'
 import { TRPCProvider } from '../lib/trpc'
@@ -17,37 +11,19 @@ export const metadata: Metadata = {
   description: 'Get automated code reviews using AI. Expert feedback on every pull request without vendor lock-in.',
 }
 
-const currentYear = new Date().getFullYear()
-
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={clsx(fontDisplay.variable, fontSans.variable)}>
+    <html lang="en" suppressHydrationWarning className={clsx(fontDisplay.variable, fontSans.variable)}>
       <body>
-        <TRPCProvider>
-          <Navbar />
-
-          <Main>{children}</Main>
-
-          <FooterWithWaitlistFormCategoriesAndSocialIcons
-            id="footer"
-            cta={<WaitlistForm headline="Join the wait list" subheadline={<p>Automate your code reviews.</p>} />}
-            links={null}
-            fineprint={
-              <>
-                &copy; {currentYear} <s>Too</s> Two excited engineers
-              </>
-            }
-            socialLinks={
-              <SocialLink href="https://github.com/aipr-agent" name="GitHub">
-                <GitHubIcon />
-              </SocialLink>
-            }
-          />
-        </TRPCProvider>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+          <TooltipProvider>
+            <TRPCProvider>{children}</TRPCProvider>
+          </TooltipProvider>
+        </ThemeProvider>
       </body>
     </html>
   )
