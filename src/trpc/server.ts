@@ -1,5 +1,5 @@
 import { db } from '@/db'
-import { auth } from '@/lib/auth'
+import { auth, Session } from '@/lib/auth'
 import { initTRPC, TRPCError } from '@trpc/server'
 import { headers } from 'next/headers'
 import superjson from 'superjson'
@@ -8,7 +8,7 @@ import { ZodError } from 'zod'
 export interface TRPCContext {
   db: typeof db
   headers: Headers
-  session: typeof auth.$Infer.Session | null
+  session: Session | null
 }
 
 export const createTRPCContext = async (): Promise<TRPCContext> => {
