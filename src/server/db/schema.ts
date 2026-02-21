@@ -1,5 +1,7 @@
 import { relations } from 'drizzle-orm'
-import { boolean, index, integer, pgTable, serial, text, timestamp, varchar } from 'drizzle-orm/pg-core'
+import { boolean, index, integer, pgEnum, pgTable, serial, text, timestamp, varchar } from 'drizzle-orm/pg-core'
+
+export const reviewStatusEnum = pgEnum('review_status', ['PENDING', 'PROCESSING', 'COMPLETED', 'FAILED'])
 
 export const waitlists = pgTable('waitlists', {
   id: serial('id').primaryKey(),
@@ -79,9 +81,60 @@ export const verification = pgTable(
   (table) => [index('verification_identifier_idx').on(table.identifier)],
 )
 
+export const repository = pgTable('repository', {
+  id: serial('id').primaryKey(),
+  userId: text('user_id')
+    .notNull()
+    .references(() => user.id, { onDelete: 'cascade' }),
+  repoId: integer('repo_id').notNull(),
+  name: varchar('name', { length: 255 }).notNull(),
+  fullName: varchar('full_name', { length: 500 }).notNull(),
+  private: boolean('private').default(false).notNull(),
+  htmlUrl: text('html_url').notNull(),
+  description: text('description'),
+  language: varchar('language', { length: 100 }),
+  stargazersCount: integer('stargazers_count').default(0).notNull(),
+  forksCount: integer('forks_count').default(0).notNull(),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+  updatedAt: timestamp('updated_at')
+    .$onUpdate(() => /* @__PURE__ */ new Date())
+    .notNull(),
+})
+
+export const review = pgTable(
+  'review',
+  {
+    id: serial('id').primaryKey(),
+    repositoryId: integer('repository_id')
+      .notNull()
+      .references(() => repository.id, { onDelete: 'cascade' }),
+    userId: text('user_id')
+      .notNull()
+      .references(() => user.id, { onDelete: 'cascade' }),
+    prNumber: integer('pr_number').notNull(),
+    prTitle: text('pr_title').notNull(),
+    prUrl: text('pr_url').notNull(),
+    status: reviewStatusEnum('status').default('PENDING').notNull(),
+    summary: text('summary'),
+    riskScore: integer('risk_score'),
+    comments: integer('comments'),
+    error: text('error'),
+    createdAt: timestamp('created_at').defaultNow().notNull(),
+    updatedAt: timestamp('updated_at')
+      .$onUpdate(() => /* @__PURE__ */ new Date())
+      .notNull(),
+  },
+  (table) => [
+    index('review_repositoryId_idx').on(table.repositoryId),
+    index('review_userId_idx').on(table.userId),
+    index('review_status_idx').on(table.status),
+  ],
+)
+
 export const userRelations = relations(user, ({ many }) => ({
   sessions: many(session),
   accounts: many(account),
+  repositories: many(repository),
 }))
 
 export const sessionRelations = relations(session, ({ one }) => ({
@@ -95,5 +148,20 @@ export const accountRelations = relations(account, ({ one }) => ({
   user: one(user, {
     fields: [account.userId],
     references: [user.id],
+  }),
+}))
+
+export const repositoryRelations = relations(repository, ({ one, many }) => ({
+  user: one(user, {
+    fields: [repository.userId],
+    references: [user.id],
+  }),
+  reviews: many(review),
+}))
+
+export const reviewRelations = relations(review, ({ one }) => ({
+  repository: one(repository, {
+    fields: [review.repositoryId],
+    references: [repository.id],
   }),
 }))

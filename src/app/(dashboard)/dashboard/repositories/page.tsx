@@ -1,8 +1,8 @@
 'use client'
 
-import { Button } from '@/components/elements/button'
 import { Input } from '@/components/ui/input'
 import { Skeleton } from '@/components/ui/skeleton'
+import { Switch } from '@/components/ui/switch'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { trpc } from '@/lib/trpc/client'
 import {
@@ -13,10 +13,9 @@ import {
   ChevronsRight,
   GitFork,
   Lock,
-  Plus,
   Search,
 } from 'lucide-react'
-import { useMemo, useState } from 'react'
+import { startTransition, useMemo, useState } from 'react'
 
 const PER_PAGE_OPTIONS = [10, 20, 50, 100] as const
 
@@ -29,6 +28,9 @@ function TableRowSkeleton() {
           <Skeleton className="h-5 w-14 rounded-full" />
         </div>
       </TableCell>
+      <TableCell className="py-3.5 pr-5 text-right">
+        <Skeleton className="inline-block h-[1.15rem] w-8 rounded-full" />
+      </TableCell>
     </TableRow>
   )
 }
@@ -38,7 +40,56 @@ export default function RepositoriesPage() {
   const [perPage, setPerPage] = useState<(typeof PER_PAGE_OPTIONS)[number]>(10)
   const [search, setSearch] = useState('')
 
-  const getAllRepos = trpc.repository.list.useQuery({ page, perPage })
+  const utils = trpc.useUtils()
+  const getAllRepos = trpc.repository.listFromGithub.useQuery({ page, perPage })
+
+  const connectRepo = trpc.repository.connect.useMutation({
+    onMutate: async (newRepo) => {
+      await utils.repository.listFromGithub.cancel({ page, perPage })
+      const previousData = utils.repository.listFromGithub.getData({ page, perPage })
+
+      utils.repository.listFromGithub.setData({ page, perPage }, (old) => {
+        if (!old) return old
+        return {
+          ...old,
+          repos: old.repos.map((repo) => (repo.id === newRepo.repoId ? { ...repo, isTracked: true } : repo)),
+        }
+      })
+
+      return { previousData }
+    },
+    onError: (_err, _newRepo, context) => {
+      utils.repository.listFromGithub.setData({ page, perPage }, context?.previousData)
+    },
+    onSuccess: () => {
+      utils.repository.listFromGithub.invalidate({ page, perPage })
+    },
+  })
+
+  const disconnectRepo = trpc.repository.disconnect.useMutation({
+    onMutate: async ({ id: databaseId }) => {
+      await utils.repository.listFromGithub.cancel({ page, perPage })
+      const previousData = utils.repository.listFromGithub.getData({ page, perPage })
+
+      utils.repository.listFromGithub.setData({ page, perPage }, (old) => {
+        if (!old) return old
+        return {
+          ...old,
+          repos: old.repos.map((repo) =>
+            repo.databaseId === databaseId ? { ...repo, isTracked: false, databaseId: undefined } : repo,
+          ),
+        }
+      })
+
+      return { previousData }
+    },
+    onError: (_err, _variables, context) => {
+      utils.repository.listFromGithub.setData({ page, perPage }, context?.previousData)
+    },
+    onSuccess: () => {
+      utils.repository.listFromGithub.invalidate({ page, perPage })
+    },
+  })
 
   const filteredRepos = useMemo(() => {
     const repos = getAllRepos.data?.repos ?? []
@@ -47,11 +98,34 @@ export default function RepositoriesPage() {
     return repos.filter((r) => r.name.toLowerCase().includes(q))
   }, [getAllRepos.data?.repos, search])
 
-  const totalPages = getAllRepos.data?.pagination.totalPages ?? page
-
   const handlePerPageChange = (newPerPage: number) => {
     setPerPage(newPerPage as (typeof PER_PAGE_OPTIONS)[number])
     setPage(1)
+  }
+
+  const handleConnect = (repoId: number) => {
+    const repo = getAllRepos.data?.repos?.find((r) => r.id === repoId)
+    if (!repo) return
+
+    startTransition(() => {
+      connectRepo.mutate({
+        repoId: repo.id,
+        name: repo.name,
+        fullName: repo.full_name,
+        private: repo.private,
+        htmlUrl: repo.html_url,
+        description: repo.description,
+        language: repo.language,
+        stargazersCount: repo.stargazers_count,
+        forksCount: repo.forks_count,
+      })
+    })
+  }
+
+  const handleDisconnect = (databaseId: number) => {
+    startTransition(() => {
+      disconnectRepo.mutate({ id: databaseId })
+    })
   }
 
   return (
@@ -63,14 +137,9 @@ export default function RepositoriesPage() {
             Repositories
           </h1>
           <p className="mt-0.5 text-sm text-mauve-950/50 dark:text-white/50">
-            List of repositories accessible to AiPR.
+            Manage which repositories are accessible to AiPR.
           </p>
         </div>
-
-        <Button>
-          <Plus className="h-4 w-4" />
-          Add Repositories
-        </Button>
       </div>
 
       {/* Search */}
@@ -105,11 +174,14 @@ export default function RepositoriesPage() {
                   <ArrowUpDown className="h-3.5 w-3.5 opacity-50" />
                 </span>
               </TableHead>
+              <TableHead className="py-3 pr-5 text-right text-xs font-semibold tracking-wide text-mauve-950/60 uppercase dark:text-white/60">
+                Tracking
+              </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {getAllRepos.isLoading &&
-              Array.from({ length: perPage > 8 ? 8 : perPage }).map((_, i) => <TableRowSkeleton key={i} />)}
+              Array.from({ length: 5 }).map((_, i) => <TableRowSkeleton key={`skeleton-row-${i}`} />)}
 
             {getAllRepos.isSuccess && filteredRepos.length === 0 && (
               <TableRow className="border-0 hover:bg-transparent">
@@ -128,12 +200,14 @@ export default function RepositoriesPage() {
               filteredRepos.map((repo) => (
                 <TableRow
                   key={repo.id}
-                  className="cursor-pointer border-mauve-950/8 transition-colors hover:bg-mauve-950/2 dark:border-white/8 dark:hover:bg-white/3"
-                  onClick={() => window.open(repo.html_url, '_blank', 'noopener noreferrer')}
+                  className="border-mauve-950/8 transition-colors hover:bg-mauve-950/2 dark:border-white/8 dark:hover:bg-white/3"
                 >
-                  <TableCell className="py-3.5 pl-5">
+                  <TableCell
+                    className="py-3.5 pl-5"
+                    onClick={() => window.open(repo.html_url, '_blank', 'noopener noreferrer')}
+                  >
                     <div className="flex items-center gap-2.5">
-                      <span className="font-display text-sm font-semibold text-mauve-950 dark:text-white">
+                      <span className="cursor-pointer font-display text-sm font-semibold text-mauve-950 hover:underline dark:text-white">
                         {repo.name}
                       </span>
                       <span
@@ -147,6 +221,21 @@ export default function RepositoriesPage() {
                         {repo.private ? 'Private' : 'Public'}
                       </span>
                     </div>
+                  </TableCell>
+                  <TableCell className="py-3.5 pr-5 text-right">
+                    <Switch
+                      checked={repo.isTracked}
+                      onCheckedChange={(checked) => {
+                        if (checked) {
+                          handleConnect(repo.id)
+                        } else {
+                          if (repo.databaseId) {
+                            handleDisconnect(repo.databaseId)
+                          }
+                        }
+                      }}
+                      size="default"
+                    />
                   </TableCell>
                 </TableRow>
               ))}
@@ -176,9 +265,7 @@ export default function RepositoriesPage() {
             </div>
           </label>
 
-          <span className="text-xs">
-            Page {getAllRepos.data.pagination.page} of {totalPages}
-          </span>
+          <span className="text-xs">Page {getAllRepos.data.pagination.page}</span>
 
           <div className="flex items-center gap-0.5">
             <button
@@ -210,7 +297,7 @@ export default function RepositoriesPage() {
             </button>
             <button
               type="button"
-              onClick={() => setPage(totalPages)}
+              onClick={() => setPage(page + 1)}
               disabled={!getAllRepos.data.pagination.hasNextPage || getAllRepos.isFetching}
               className="flex h-8 w-8 items-center justify-center rounded-md text-mauve-950/50 transition-colors hover:bg-mauve-950/6 disabled:pointer-events-none disabled:opacity-30 dark:text-white/50 dark:hover:bg-white/6"
               aria-label="Last page"

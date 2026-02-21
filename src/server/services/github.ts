@@ -31,3 +31,36 @@ export async function getchGithubRepos(accessToken: string, page: number, perPag
     headers,
   }
 }
+
+export async function getPullRequest(accessToken: string, owner: string, repo: string, prNumber: number) {
+  const octokit = new Octokit({
+    auth: accessToken,
+  })
+
+  const { data: pullRequest } = await octokit.rest.pulls.get({
+    owner,
+    repo,
+    pull_number: prNumber,
+  })
+
+  return pullRequest
+}
+
+export async function listPullRequests(
+  accessToken: string,
+  owner: string,
+  repo: string,
+  state: 'open' | 'closed' | 'all' = 'open',
+) {
+  const octokit = new Octokit({
+    auth: accessToken,
+  })
+
+  const { data: pullRequests } = await octokit.rest.pulls.list({
+    owner,
+    repo,
+    state,
+  })
+
+  return pullRequests
+}
