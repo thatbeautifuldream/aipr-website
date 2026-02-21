@@ -1,4 +1,4 @@
-import { listRepositoryRouter } from '@/server/routers/repository'
+import { repository } from '@/server/routers/repository'
 import { waitlistRouter } from '@/server/routers/waitlist'
 import { createCallerFactory, createTRPCRouter, publicProcedure } from './trpc'
 
@@ -7,7 +7,7 @@ export const appRouter = createTRPCRouter({
     return { status: 'OK', timestamp: Date.now() }
   }),
   waitlist: waitlistRouter,
-  listRepository: listRepositoryRouter,
+  repository,
 })
 
 export const AppRouter = typeof appRouter

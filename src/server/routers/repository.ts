@@ -3,7 +3,7 @@ import { z } from 'zod'
 import { createTRPCRouter, protectedProcedure } from '../api/trpc'
 import { getchGithubRepos, getGithubAccessToken } from '../services/github'
 
-export const listRepositoryRouter = createTRPCRouter({
+export const repository = createTRPCRouter({
   list: protectedProcedure
     .input(
       z.object({
