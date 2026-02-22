@@ -1,5 +1,5 @@
 import { TRPCError } from '@trpc/server'
-import { and, eq } from 'drizzle-orm'
+import { and, desc, eq, sql } from 'drizzle-orm'
 import { z } from 'zod'
 import { createTRPCRouter, protectedProcedure } from '../api/trpc'
 import { db } from '../db'
@@ -32,15 +32,16 @@ export const repository = createTRPCRouter({
       const hasPrevPage = headers['link']?.includes('rel="prev"')
 
       const trackedRepos = await db
-        .select({ repoId: repositoryTable.repoId })
+        .select({ id: repositoryTable.id, repoId: repositoryTable.repoId })
         .from(repositoryTable)
         .where(eq(repositoryTable.userId, userId))
 
-      const trackedIds = new Set(trackedRepos.map((r) => r.repoId))
+      const trackedMap = new Map(trackedRepos.map((r) => [r.repoId, r.id]))
 
       const reposWithTrackedStatus = userRepos.map((repo) => ({
         ...repo,
-        isTracked: trackedIds.has(repo.id),
+        isTracked: trackedMap.has(repo.id),
+        databaseId: trackedMap.get(repo.id),
       }))
 
       return {
@@ -54,13 +55,54 @@ export const repository = createTRPCRouter({
       }
     }),
 
-  list: protectedProcedure.query(async ({ ctx }) => {
-    const userId = ctx.session.user.id
+  list: protectedProcedure
+    .input(
+      z.object({
+        page: z.number().min(1).optional().default(1),
+        perPage: z.number().min(1).max(100).optional().default(10),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const userId = ctx.session.user.id
+      const { page, perPage } = input
+      const offset = (page - 1) * perPage
 
-    const trackedRepos = await db.select().from(repositoryTable).where(eq(repositoryTable.userId, userId))
+      const [repos, totalCount] = await Promise.all([
+        db
+          .select()
+          .from(repositoryTable)
+          .where(eq(repositoryTable.userId, userId))
+          .orderBy(desc(repositoryTable.createdAt))
+          .limit(perPage)
+          .offset(offset),
+        db
+          .select({ count: sql<number>`count(*)` })
+          .from(repositoryTable)
+          .where(eq(repositoryTable.userId, userId))
+          .then((result) => result[0]?.count ?? 0),
+      ])
 
-    return trackedRepos
-  }),
+      const totalPages = Math.ceil(totalCount / perPage)
+
+      const reposWithTrackingStatus = repos.map((repo) => ({
+        ...repo,
+        html_url: repo.htmlUrl,
+        full_name: repo.fullName,
+        stargazers_count: repo.stargazersCount,
+        forks_count: repo.forksCount,
+        isTracked: true,
+      }))
+
+      return {
+        repos: reposWithTrackingStatus,
+        pagination: {
+          page,
+          perPage,
+          hasNextPage: page < totalPages,
+          hasPrevPage: page > 1,
+        },
+      }
+    }),
 
   connect: protectedProcedure
     .input(
