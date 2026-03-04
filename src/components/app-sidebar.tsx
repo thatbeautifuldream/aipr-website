@@ -5,6 +5,7 @@ import { GitDiffIcon } from '@/components/icons/git-diff-icon'
 import { GitPullIcon } from '@/components/icons/git-pull-icon'
 import { HomeIcon } from '@/components/icons/home-icon'
 import { GitHubIcon } from '@/components/icons/social/github-icon'
+import { MessageSquare } from 'lucide-react'
 import {
   Sidebar,
   SidebarContent,
@@ -27,6 +28,11 @@ const items = [
     title: 'Repositories',
     url: '/dashboard/repositories',
     icon: GitBranchIcon,
+  },
+  {
+    title: 'Chat',
+    url: '/dashboard/chat',
+    icon: MessageSquare,
   },
   {
     title: 'Pull Requests',

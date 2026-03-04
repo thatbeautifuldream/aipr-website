@@ -1,3 +1,4 @@
+import { chat } from '@/server/routers/chat'
 import { pullRequest } from '@/server/routers/pullRequest'
 import { repository } from '@/server/routers/repository'
 import { waitlist } from '@/server/routers/waitlist'
@@ -10,6 +11,7 @@ export const appRouter = createTRPCRouter({
   waitlist,
   repository,
   pullRequest,
+  chat,
 })
 
 export const AppRouter = typeof appRouter

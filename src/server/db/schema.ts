@@ -1,5 +1,6 @@
 import { relations } from 'drizzle-orm'
-import { boolean, index, integer, pgEnum, pgTable, serial, text, timestamp, varchar } from 'drizzle-orm/pg-core'
+import { boolean, index, integer, jsonb, pgEnum, pgTable, serial, text, timestamp, varchar } from 'drizzle-orm/pg-core'
+import { vector } from 'drizzle-orm/pg-core'
 
 export const reviewStatusEnum = pgEnum('review_status', ['PENDING', 'PROCESSING', 'COMPLETED', 'FAILED'])
 
@@ -131,10 +132,67 @@ export const review = pgTable(
   ],
 )
 
+export const repositoryContent = pgTable(
+  'repository_content',
+  {
+    id: serial('id').primaryKey(),
+    repositoryId: integer('repository_id')
+      .notNull()
+      .references(() => repository.id, { onDelete: 'cascade' }),
+    filePath: text('file_path').notNull(),
+    fileName: text('file_name').notNull(),
+    content: text('content').notNull(),
+    language: varchar('language', { length: 50 }),
+    embedding: vector('embedding', { dimensions: 1536 }).notNull(),
+    lineStart: integer('line_start').default(0).notNull(),
+    lineEnd: integer('line_end').default(0).notNull(),
+    chunkIndex: integer('chunk_index').default(0).notNull(),
+    createdAt: timestamp('created_at').defaultNow().notNull(),
+  },
+  (table) => [index('repository_content_repository_idx').on(table.repositoryId)],
+)
+
+export const chatSession = pgTable(
+  'chat_session',
+  {
+    id: serial('id').primaryKey(),
+    repositoryId: integer('repository_id')
+      .notNull()
+      .references(() => repository.id, { onDelete: 'cascade' }),
+    userId: text('user_id')
+      .notNull()
+      .references(() => user.id, { onDelete: 'cascade' }),
+    title: varchar('title', { length: 255 }).notNull(),
+    createdAt: timestamp('created_at').defaultNow().notNull(),
+    updatedAt: timestamp('updated_at')
+      .defaultNow()
+      .$onUpdate(() => new Date())
+      .notNull(),
+  },
+  (table) => [index('chat_session_user_repository_idx').on(table.userId, table.repositoryId)],
+)
+
+export const chatMessage = pgTable(
+  'chat_message',
+  {
+    id: serial('id').primaryKey(),
+    sessionId: integer('session_id')
+      .notNull()
+      .references(() => chatSession.id, { onDelete: 'cascade' }),
+    role: varchar('role', { length: 20 }).notNull(),
+    content: text('content').notNull(),
+    contextChunks: jsonb('context_chunks'),
+    createdAt: timestamp('created_at').defaultNow().notNull(),
+  },
+  (table) => [index('chat_message_session_idx').on(table.sessionId)],
+)
+
+// Relations
 export const userRelations = relations(user, ({ many }) => ({
   sessions: many(session),
   accounts: many(account),
   repositories: many(repository),
+  chatSessions: many(chatSession),
 }))
 
 export const sessionRelations = relations(session, ({ one }) => ({
@@ -157,6 +215,8 @@ export const repositoryRelations = relations(repository, ({ one, many }) => ({
     references: [user.id],
   }),
   reviews: many(review),
+  chatSessions: many(chatSession),
+  content: many(repositoryContent),
 }))
 
 export const reviewRelations = relations(review, ({ one }) => ({
@@ -165,3 +225,34 @@ export const reviewRelations = relations(review, ({ one }) => ({
     references: [repository.id],
   }),
 }))
+
+export const repositoryContentRelations = relations(repositoryContent, ({ one }) => ({
+  repository: one(repository, { fields: [repositoryContent.repositoryId], references: [repository.id] }),
+}))
+
+export const chatSessionRelations = relations(chatSession, ({ one, many }) => ({
+  repository: one(repository, { fields: [chatSession.repositoryId], references: [repository.id] }),
+  user: one(user, { fields: [chatSession.userId], references: [user.id] }),
+  messages: many(chatMessage),
+}))
+
+export const chatMessageRelations = relations(chatMessage, ({ one }) => ({
+  session: one(chatSession, { fields: [chatMessage.sessionId], references: [chatSession.id] }),
+}))
+
+// Types
+export type TContextChunk = {
+  id: number
+  filePath: string
+  fileName: string
+  content: string
+  lineStart: number
+  lineEnd: number
+}
+
+export type TChatSession = typeof chatSession.$inferSelect
+export type TNewChatSession = typeof chatSession.$inferInsert
+export type TChatMessage = typeof chatMessage.$inferSelect
+export type TNewChatMessage = typeof chatMessage.$inferInsert
+export type TRepositoryContent = typeof repositoryContent.$inferSelect
+export type TNewRepositoryContent = typeof repositoryContent.$inferInsert

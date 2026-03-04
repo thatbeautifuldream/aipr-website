@@ -4,3 +4,6 @@ node_modules
 .env.*
 .env.local
 drizzle
+
+# opensrc - source code for packages
+opensrc/
