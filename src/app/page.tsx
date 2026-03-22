@@ -91,14 +91,14 @@ export default function Page() {
                   </div>
                 </div>
                 <div className="bg-linear-to-b from-white/5 to-transparent p-5 sm:p-7">
-                  <p className="font-mono text-sm whitespace-pre-wrap text-stone-100 sm:text-[15px]">
+                  <p className="font-mono text-sm whitespace-pre-wrap text-stone-100 sm:text-sm">
                     aipr-website on main is 📦 v0.0.1 via 🥟 v1.3.10
                   </p>
-                  <p className="mt-4 font-mono text-sm text-emerald-300 sm:text-[15px]">
+                  <p className="font-mono text-sm sm:text-sm">
                     <span className="mr-2 text-stone-500">❯</span>
                     aipr harness list
                   </p>
-                  <div className="mt-4 space-y-2 border-t border-white/10 pt-4 font-mono text-xs text-stone-300 sm:text-sm">
+                  <div className="space-y-1 font-mono text-xs text-stone-300 sm:text-sm">
                     <p className="whitespace-pre-wrap">claude installed native-json 2.1.81 (Claude Code)</p>
                     <p className="whitespace-pre-wrap">codex installed prompt-json codex-cli 0.116.0</p>
                     <p className="whitespace-pre-wrap">gemini installed native-json 0.18.4</p>
