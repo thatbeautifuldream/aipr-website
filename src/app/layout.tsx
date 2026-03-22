@@ -17,6 +17,26 @@ export const metadata: Metadata = {
   title: 'AIPR | Create Draft PRs With AI',
   description:
     'Create AI-generated draft GitHub pull requests from your terminal with Claude Code, Codex CLI, or Gemini CLI.',
+  openGraph: {
+    title: 'AIPR | Create Draft PRs With AI',
+    description:
+      'Create AI-generated draft GitHub pull requests from your terminal with Claude Code, Codex CLI, or Gemini CLI.',
+    images: [
+      {
+        url: 'https://cdn.jsdelivr.net/gh/aipr-agent/cdn/aipr-agent-mascot.webp',
+        width: 3440,
+        height: 1990,
+        alt: 'AIPR mascot next to the command-driven workflow',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'AIPR | Create Draft PRs With AI',
+    description:
+      'Create AI-generated draft GitHub pull requests from your terminal with Claude Code, Codex CLI, or Gemini CLI.',
+    images: ['https://cdn.jsdelivr.net/gh/aipr-agent/cdn/aipr-agent-mascot.webp'],
+  },
 }
 
 const currentYear = new Date().getFullYear()
