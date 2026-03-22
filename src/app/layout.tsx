@@ -14,8 +14,9 @@ import { fontDisplay, fontSans } from './fonts'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'AIPR Automated Code Review',
-  description: 'Get automated code reviews using AI. Expert feedback on every pull request without vendor lock-in.',
+  title: 'AIPR | Create Draft PRs With AI',
+  description:
+    'Create AI-generated draft GitHub pull requests from your terminal with Claude Code, Codex CLI, or Gemini CLI.',
 }
 
 const currentYear = new Date().getFullYear()
@@ -35,11 +36,25 @@ export default function RootLayout({
 
           <FooterWithWaitlistFormCategoriesAndSocialIcons
             id="footer"
-            cta={<WaitlistForm headline="Join the wait list" subheadline={<p>Automate your code reviews.</p>} />}
+            cta={
+              <WaitlistForm
+                headline="Join the wait list"
+                subheadline={<p>Get product updates, launch notes, and early access to what ships next.</p>}
+              />
+            }
             links={null}
             fineprint={
               <>
-                &copy; {currentYear} <s>Too</s> Two excited engineers
+                &copy; {currentYear} aipr by{' '}
+                <a
+                  href="https://milindmishra.com/"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="font-medium text-brick-950 underline underline-offset-4 dark:text-white"
+                >
+                  Milind Mishra
+                </a>
+                . Draft PRs, less ceremony.
               </>
             }
             socialLinks={
@@ -47,7 +62,7 @@ export default function RootLayout({
                 {/* <SocialLink href="https://x.com" name="X">
                   <XIcon />
                 </SocialLink> */}
-                <SocialLink href="https://github.com/aipr-agent" name="GitHub">
+                <SocialLink href="https://github.com/thatbeautifuldream/aipr" name="GitHub">
                   <GitHubIcon />
                 </SocialLink>
               </>
